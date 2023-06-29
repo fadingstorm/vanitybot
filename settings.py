@@ -1,4 +1,5 @@
 import os
+import logging
 from logging.config import dictConfig
 from dotenv import load_dotenv
 
@@ -20,19 +21,20 @@ LOGGING_CONFIG = {
     "handlers" : {
         "console":{
             "level" : "DEBUG",
-            "class" : "Logging.StreamHandler",
+            "class" : "logging.StreamHandler",
             "formatter" : "standard"
         },
         "console2":{
             "level" : "WARNING",
-            "class" : "Logging.StreamHandler",
+            "class" : "logging.StreamHandler",
             "formatter" : "standard"
         },
         "file":{
             "level" : "INFO",
-            "class" : "Logging.FileHandler",
+            "class" : "logging.FileHandler",
             "filename" : "Logs/infos.log",
-            "mode" : "w"
+            "mode" : "w",
+            "formatter" : "verbose"
         }
     },
     "loggers" : {
