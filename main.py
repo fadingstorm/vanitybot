@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 from APIs import cats, dogs, nekos, quotes
+from webscraping import anime_news
 
 logger = settings.logging.getLogger("bot")
 
@@ -43,8 +44,9 @@ def run():
         )
         embed.add_field(name='Helpful Commands', value=help_list(lists.helpful), inline=False)
         embed.add_field(name='Random Commands', value=help_list(lists.random_commands), inline=False)
-        embed.add_field(name='Fun Commands', value=help_list(lists.fun), inline=False)
         embed.add_field(name='Image Commands', value=help_list(lists.image), inline=False)
+        embed.add_field(name='Fun Commands', value=help_list(lists.fun), inline=False)
+        embed.add_field(name='Anime Commands', value=help_list(lists.anime), inline=False)
         await interaction.response.send_message(embed=embed)
     
     @bot.tree.command(name='invite', description='Provides an invite link for the bot!')
@@ -99,7 +101,7 @@ def run():
     @bot.tree.command(name='neko', description='Sends an image of a neko!')
     async def neko(interaction: discord.Interaction):
         embed = discord.Embed(
-            color=discord.Color.dark_gold(),
+            color=discord.Color.pink(),
             title="Neko"
         )
         embed.set_image(url=nekos.get_neko_img()[0])
@@ -115,6 +117,18 @@ def run():
     @app_commands.describe(user='The user you want to punch.')
     async def punch(interaction: discord.Interaction, user: discord.User):
         await interaction.response.send_message(f"{interaction.user.mention} punched {user.mention}!")
+    
+    @bot.tree.command(name='animenews', description='Read up on the latest anime headlines!')
+    async def animenews(interaction: discord.Interaction):
+        stuff = anime_news.get_anime_news()
+        TITLE = stuff[0]
+        DESC = stuff[1]
+        embed = discord.Embed(
+            color=discord.Color.dark_magenta(),
+            title=TITLE,
+            description=DESC
+        )
+        await interaction.response.send_message(embed=embed)
 
     bot.run(settings.DISCORD_API_SECRET, root_logger=True)
 

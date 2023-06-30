@@ -28,13 +28,17 @@ random_commands = (
     "ping",
     "quote",
 )
+image = (
+    "dog",
+    "cat",
+    "neko"
+)
 fun = (
     "fate",
     "slap",
     "punch",
 )
-image = (
-    "dog",
-    "cat",
-    "neko",
+anime = (
+    "animenews",
+    "animequote"
 )
