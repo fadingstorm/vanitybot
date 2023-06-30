@@ -20,17 +20,19 @@ eight_ball_responses = (
     "Very doubtful."
 )
 
-informative_commands = (
-    "ping",
-    "info",
+helpful = (
+    "help",
+    "invite",
 )
-
+random_commands = (
+    "ping",
+    "quote",
+)
 fun = (
     "fate",
     "slap",
     "punch",
 )
-
 image = (
     "dog",
     "cat",
