@@ -19,22 +19,24 @@ def run():
         logger.info(f"Guild ID: {bot.guilds[0].id}")
         bot.tree.copy_global_to(guild=settings.GUILDS_ID)
         await bot.tree.sync(guild=settings.GUILDS_ID)
-
+    
 
    # Here are all the commands for the bot
-    @bot.command()
-    async def help(ctx):
-        await ctx.send("this is the help page") 
+    @bot.tree.command()
+    async def help(interaction: discord.Interaction):
+        await interaction.response.send_message("This is the help page!")
     
-    @bot.tree.command(description='Ask a yes or no question!', name='fate')
+    @bot.tree.command(name='ping', description='Sends pong!')
+    async def ping(interaction: discord.Interaction):
+        await interaction.response.send_message(f"pong! {interaction.user.mention}")
+    
+    @bot.tree.command(name='fate', description='Ask a yes or no question!')
     async def fate(interaction: discord.Interaction, question: str):
         await interaction.response.send_message(random.choice(lists.eight_ball_responses))
-
-    @bot.tree.command(description='Says pong!', name='ping')
-    async def ping(interaction: discord.Interaction):
-        await interaction.response.send_message(f"pong! {interaction.user.mention}", ephemeral=True)
+    
 
     bot.run(settings.DISCORD_API_SECRET, root_logger=True)
+
 
 if __name__ == "__main__":
     run()
