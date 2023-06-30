@@ -19,3 +19,19 @@ eight_ball_responses = (
     "Outlook not so good.",
     "Very doubtful."
 )
+
+informative_commands = (
+    "ping",
+    "info",
+)
+
+fun = (
+    "fate",
+    "slap",
+    "punch",
+)
+
+image = (
+    "dog",
+    "cat",
+)
