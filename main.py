@@ -4,9 +4,11 @@ import settings
 import discord
 from discord.ext import commands
 from discord import app_commands
-from APIs import cats, dogs, quotes
+from APIs import cats, dogs, nekos, quotes
 
 logger = settings.logging.getLogger("bot")
+
+INVITE_LINK = "https://discord.com/api/oauth2/authorize?client_id=1124264065221541988&permissions=534723819584&scope=bot"
 
 # this is literally only for the help command
 def help_list(thing):
@@ -39,12 +41,16 @@ def run():
             description='This bot has many fun commands for you to use!\n*Keep in mind that this bot uses slash commands.*',
             title=f'{bot.user.name}\'s commands!'
         )
-        embed.add_field(name='Helpful Commands', value=help_list(lists.random_commands), inline=False)
+        embed.add_field(name='Helpful Commands', value=help_list(lists.helpful), inline=False)
         embed.add_field(name='Random Commands', value=help_list(lists.random_commands), inline=False)
         embed.add_field(name='Fun Commands', value=help_list(lists.fun), inline=False)
         embed.add_field(name='Image Commands', value=help_list(lists.image), inline=False)
         await interaction.response.send_message(embed=embed)
     
+    @bot.tree.command(name='invite', description='Provides an invite link for the bot!')
+    async def invite(interaction: discord.Interaction):
+        await interaction.response.send_message(INVITE_LINK, ephemeral=True)
+
     @bot.tree.command(name='ping', description='Sends pong!')
     async def ping(interaction: discord.Interaction):
         embed = discord.Embed(
@@ -88,6 +94,16 @@ def run():
             title="What a cute cat :cat:"
         )
         embed.set_image(url=cats.get_cat_url())
+        await interaction.response.send_message(embed=embed)
+
+    @bot.tree.command(name='neko', description='Sends an image of a neko!')
+    async def neko(interaction: discord.Interaction):
+        embed = discord.Embed(
+            color=discord.Color.dark_gold(),
+            title="Neko"
+        )
+        embed.set_image(url=nekos.get_neko_img()[0])
+        embed.set_footer(text=f'Artist: {nekos.get_neko_img()[1]}')
         await interaction.response.send_message(embed=embed)
 
     @bot.tree.command(name='slap', description='Slaps another user!')

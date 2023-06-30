@@ -36,4 +36,5 @@ fun = (
 image = (
     "dog",
     "cat",
+    "neko",
 )
