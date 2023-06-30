@@ -25,6 +25,7 @@ def run():
         logger.info(f"User: {bot.user} (ID: {bot.user.id})")
         logger.info(f"Guild ID: {bot.guilds[0].id}")
         #bot.tree.copy_global_to(guild=settings.GUILDS_ID)
+        print('The bot should be up and running.')
         await bot.tree.sync(guild=None)
     
 
@@ -32,7 +33,7 @@ def run():
     @bot.tree.command(name='help', description='Provides a list of all commands.')
     async def help(interaction: discord.Interaction):
         embed = discord.Embed(
-            colour=discord.Colour.dark_teal(),
+            color=discord.Color.blue(),
             description='This bot has many fun commands for you to use!\n*Keep in mind that this bot uses slash commands.*',
             title=f'{bot.user.name}\'s commands!'
         )
@@ -45,12 +46,21 @@ def run():
     
     @bot.tree.command(name='ping', description='Sends pong!')
     async def ping(interaction: discord.Interaction):
-        await interaction.response.send_message(f"Pong! {round(bot.latency * 100000) / 100}ms {interaction.user.mention}")
+        embed = discord.Embed(
+            color=discord.Color.blurple(),
+            description=f"{round(bot.latency * 100000) / 100}ms {interaction.user.mention}",
+            title="Pong!"
+        )
+        await interaction.response.send_message(embed=embed)
     
     @bot.tree.command(name='fate', description='Ask a yes or no question!')
     @app_commands.describe(question='Your yes or no question.')
     async def fate(interaction: discord.Interaction, question: str):
-        await interaction.response.send_message(random.choice(lists.eight_ball_responses))
+        embed = discord.Embed(
+            color=discord.Color.random(),
+            title=random.choice(lists.eight_ball_responses)
+        )
+        await interaction.response.send_message(embed=embed)
     
     @bot.tree.command(name='dog', description='Sends a photo of a dog!')
     async def dog(interaction: discord.Interaction):
