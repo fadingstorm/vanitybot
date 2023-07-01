@@ -29,9 +29,10 @@ random_commands = (
     "quote",
 )
 image = (
-    "dog",
     "cat",
-    "neko"
+    "dog",
+    "duck",
+    "neko",
 )
 fun = (
     "fate",

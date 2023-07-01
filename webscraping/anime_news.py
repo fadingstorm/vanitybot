@@ -10,11 +10,14 @@ def get_anime_news():
     num = random.randint(0, len(all_news) - 1)
     names = []
     descs = []
+    links = []
     for news in all_news:
         name = news.find('a').text
         desc = news.find('div', class_="text").text
+        link = news.find('a')['href']
         names.append(name)
         descs.append(desc.strip())
-    return (names[num], descs[num])
+        links.append(link)
+    return (names[num], descs[num], links[num])
 
 #print(get_anime_news())

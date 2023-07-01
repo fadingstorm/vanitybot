@@ -4,7 +4,7 @@ import settings
 import discord
 from discord.ext import commands
 from discord import app_commands
-from APIs import cats, dogs, nekos, quotes
+from APIs import anime_quotes, cats, dogs, ducks, nekos, quotes
 from webscraping import anime_news
 
 logger = settings.logging.getLogger("bot")
@@ -66,7 +66,7 @@ def run():
     async def quote(interaction: discord.Interaction):
         embed = discord.Embed(
             color=discord.Color.darker_grey(),
-            description=f'*{quotes.get_quote()[0]}*'
+            title=f'*{quotes.get_quote()[0]}*',
         )
         embed.set_footer(text=f'—{quotes.get_quote()[1]}')
         await interaction.response.send_message(embed=embed)
@@ -80,29 +80,41 @@ def run():
         )
         await interaction.response.send_message(embed=embed)
     
-    @bot.tree.command(name='dog', description='Sends a photo of a dog!')
-    async def dog(interaction: discord.Interaction):
-        embed = discord.Embed(
-            color=discord.Color.dark_gold(),
-            title="What a cute dog :dog:"
-        )
-        embed.set_image(url=dogs.get_dog_url())
-        await interaction.response.send_message(embed=embed)
-    
     @bot.tree.command(name='cat', description='Sends a photo of a cat!')
     async def cat(interaction: discord.Interaction):
         embed = discord.Embed(
             color=discord.Color.dark_gold(),
-            title="What a cute cat :cat:"
+            title="Meow Meow! :cat:"
         )
         embed.set_image(url=cats.get_cat_url())
+        embed.set_footer(text='Dogs or cats?')
+        await interaction.response.send_message(embed=embed)
+
+    @bot.tree.command(name='dog', description='Sends a photo of a dog!')
+    async def dog(interaction: discord.Interaction):
+        embed = discord.Embed(
+            color=discord.Color.dark_gold(),
+            title="Woof Woof! :dog:"
+        )
+        embed.set_image(url=dogs.get_dog_url())
+        embed.set_footer(text='Man\'s best friend')
+        await interaction.response.send_message(embed=embed)
+
+    @bot.tree.command(name='duck', description='Sends an image of a duck!')
+    async def duck(interaction: discord.Interaction):
+        embed = discord.Embed(
+            color=discord.Color.dark_gold(),
+            title="Quack! :duck:"
+        )
+        embed.set_image(url=ducks.get_duck_img()[0])
+        embed.set_footer(text=f'{ducks.get_duck_img()[1]}')
         await interaction.response.send_message(embed=embed)
 
     @bot.tree.command(name='neko', description='Sends an image of a neko!')
     async def neko(interaction: discord.Interaction):
         embed = discord.Embed(
             color=discord.Color.pink(),
-            title="Neko"
+            title="Neko~"
         )
         embed.set_image(url=nekos.get_neko_img()[0])
         embed.set_footer(text=f'Artist: {nekos.get_neko_img()[1]}')
@@ -121,6 +133,13 @@ def run():
     @bot.tree.command(name='animenews', description='Read up on the latest anime headlines!')
     async def animenews(interaction: discord.Interaction):
         stuff = anime_news.get_anime_news()
+
+        # for the button (read more button)
+        view = discord.ui.View()
+        button = discord.ui.Button(label="Read More", url=stuff[2], style=discord.ButtonStyle.red)
+        view.add_item(button)
+
+        # for the actual embed content
         TITLE = stuff[0]
         DESC = stuff[1]
         embed = discord.Embed(
@@ -128,7 +147,21 @@ def run():
             title=TITLE,
             description=DESC
         )
-        await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(embed=embed, view=view)
+
+    @bot.tree.command(name='animequote', description='Sends a random anime quote!')
+    async def animequote(interaction: discord.Interaction):
+        QUOTE = anime_quotes.get_anime_quote()
+        CHARACTER = QUOTE[0]
+        TEXT = QUOTE[1]
+        ANIME = QUOTE[2]
+        embed = discord.Embed(
+            color=discord.Color.dark_purple(),
+            title=CHARACTER,
+            description=f'*{TEXT}*'
+        )
+        embed.set_footer(text=f'{CHARACTER} | {ANIME}')
+        await interaction.response.send_message(embed=embed)   
 
     bot.run(settings.DISCORD_API_SECRET, root_logger=True)
 
