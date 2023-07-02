@@ -2,9 +2,10 @@ import random
 import lists
 import settings
 import discord
+import asyncio
 from discord.ext import commands
 from discord import app_commands
-from APIs import anime_quotes, cats, dogs, ducks, nekos, quotes
+from APIs import anime_quotes, cats, coffees, dogs, ducks, nekos, quotes, trivias
 from webscraping import anime_news, stock_check
 
 logger = settings.logging.getLogger("bot")
@@ -72,11 +73,12 @@ def run():
     
     @bot.tree.command(name='quote', description='Sends a random quote!')
     async def quote(interaction: discord.Interaction):
+        info = quotes.get_quote()
         embed = discord.Embed(
             color=discord.Color.darker_grey(),
-            title=f'*{quotes.get_quote()[0]}*',
+            title=f'*{info[0]}*',
         )
-        embed.set_footer(text=f'—{quotes.get_quote()[1]}')
+        embed.set_footer(text=f'—{info[1]}')
         await interaction.response.send_message(embed=embed)
 
     @bot.tree.command(name='stockinfo', description='Get info on your favorite stock!')
@@ -140,12 +142,23 @@ def run():
 
     @bot.tree.command(name='neko', description='Sends an image of a neko!')
     async def neko(interaction: discord.Interaction):
+        info = nekos.get_neko_img()
         embed = discord.Embed(
             color=discord.Color.pink(),
             title="Neko~"
         )
-        embed.set_image(url=nekos.get_neko_img()[0])
-        embed.set_footer(text=f'Artist: {nekos.get_neko_img()[1]}')
+        embed.set_image(url=info[0])
+        embed.set_footer(text=f'Artist: {info[1]}')
+        await interaction.response.send_message(embed=embed)
+
+    @bot.tree.command(name='coffee', description='Sends a random photo of coffee!')
+    async def coffee(interaction: discord.Interaction):
+        embed = discord.Embed(
+            color=discord.Color.dark_orange(),
+            title="Coffee. :coffee:"
+        )
+        embed.set_image(url=coffees.get_coffee_img())
+        embed.set_footer(text='Everyone needs it.')
         await interaction.response.send_message(embed=embed)
 
     @bot.tree.command(name='fate', description='Ask a yes or no question!')
@@ -208,10 +221,105 @@ def run():
             description=f'*{TEXT}*'
         )
         embed.set_footer(text=f'{CHARACTER} | {ANIME}')
-        await interaction.response.send_message(embed=embed)   
+        await interaction.response.send_message(embed=embed)  
+    
+    # this command took the longest........
+    # the code is probably very inefficient
+    @bot.tree.command(name='trivia', description='Asks a random trivia question!')
+    async def trivia(interaction: discord.Interaction):
+        channel = interaction.channel
+        info = trivias.get_trivia()
+        all_choices = [info['correct_answer']] + info['incorrect_answers']
+        random.shuffle(all_choices)
+        question_type = info['type']
+
+        # matches each choice to ABCD (if it is a multiple choice)
+        if question_type != 'boolean':
+            choices_dict = {
+                'A':all_choices[0],
+                'B':all_choices[1],
+                'C':all_choices[2],
+                'D':all_choices[3],
+            }
+
+        # Creating the actual embed to ask the question
+        embed = discord.Embed(
+            color=discord.Color.blue(),
+            description='Type the letter of the correct answer or true/false!'
+        )
+        embed.add_field(name='Category', value=info['category'])
+        embed.add_field(name='Difficulty', value=info['difficulty'].upper())
+        embed.add_field(name='Question', value=info['question'], inline=False)
+
+        # I dont wanna type this out again
+        correct_letter = list(choices_dict.keys())[list(choices_dict.values()).index(info['correct_answer'])]
+
+        # if the question is a multiple choice, or a true/false, the bot will take answers differently
+        # prolly could have made this more efficient but whatever
+        if question_type == 'boolean':
+            embed.add_field(name='True or False?', value='')
+            await interaction.response.send_message(embed=embed)
+            
+            # now waiting for a response
+            def check(m):
+                return (m.content.capitalize() in ('True', 'False')) and m.channel == channel
+            try:
+                answer = await bot.wait_for('message', check=check, timeout=10)
+
+                # when the answer is right
+                if answer.content.capitalize() == info['correct_answer']:
+                    embed.color = discord.Color.brand_green()
+                    embed.description = f'{answer.author.mention} got it first!'
+                    embed.add_field(name='Correct Answer\n', value=info['correct_answer'], inline=False)
+                    embed.set_footer(text='Nice job!')
+                    await interaction.edit_original_response(embed=embed)
+                else: # when the answer is wrong
+                    embed.color = discord.Color.brand_red()
+                    embed.description = f'{answer.author.mention} got it wrong!'
+                    embed.add_field(name='Correct Answer\n', value=info['correct_answer'], inline=False)
+                    embed.set_footer(text=f'You chose: {answer.content.capitalize()}')
+                    await interaction.edit_original_response(embed=embed)
+            except asyncio.TimeoutError: # when the time is up
+                embed.color = discord.Color.brand_red()
+                embed.description = 'Time\'s up!'
+                embed.add_field(name='Correct Answer\n', value=info['correct_answer'], inline=False)
+                embed.set_footer(text='You get 10 seconds to answer.')
+                await interaction.edit_original_response(embed=embed)       
+        else:
+            embed.add_field(
+                name='Choices',
+                value=f'**A)** {all_choices[0]}\n**B)** {all_choices[1]}\n**C)** {all_choices[2]}\n**D)** {all_choices[3]}'
+            )
+            await interaction.response.send_message(embed=embed)
+        
+            # now waiting for a response
+            def check(m):
+                return (m.content.capitalize() in ('A', 'B', 'C', 'D')) and m.channel == channel
+            try:
+                answer = await bot.wait_for('message', check=check, timeout=10)
+
+                # when the answer is right
+                if choices_dict[answer.content.capitalize()] == info['correct_answer']:
+                    embed.color = discord.Color.brand_green()
+                    embed.description = f'{answer.author.mention} got it first!'
+                    embed.add_field(name='Correct Answer\n', value=correct_letter + '\n' + info['correct_answer'], inline=False)
+                    embed.set_footer(text='Nice job!')
+                    await interaction.edit_original_response(embed=embed)
+                else: # when the answer is wrong
+                    embed.color = discord.Color.brand_red()
+                    embed.description = f'{answer.author.mention} got it wrong!'
+                    embed.add_field(name='Correct Answer', value=correct_letter + '\n' + info['correct_answer'], inline=False)
+                    embed.set_footer(text=f'You chose: {answer.content.capitalize()}) {choices_dict[answer.content.capitalize()]}')
+                    await interaction.edit_original_response(embed=embed)
+            except asyncio.TimeoutError: # when the time is up
+                embed.color = discord.Color.brand_red()
+                embed.description = 'Time\'s up!'
+                embed.add_field(name='Correct Answer', value=correct_letter + '\n' + info['correct_answer'], inline=False)
+                embed.set_footer(text='You get 10 seconds to answer.')
+                await interaction.edit_original_response(embed=embed)
+
 
     bot.run(settings.DISCORD_API_SECRET, root_logger=True)
-
 
 if __name__ == "__main__":
     run()

@@ -34,11 +34,13 @@ image = (
     "dog",
     "duck",
     "neko",
+    "coffee"
 )
 fun = (
     "fate",
     "slap",
     "kiss",
+    "trivia"
 )
 anime = (
     "animenews",
