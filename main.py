@@ -5,7 +5,7 @@ import discord
 import asyncio
 from discord.ext import commands
 from discord import app_commands
-from APIs import anime_quotes, cats, coffees, dogs, ducks, nekos, quotes, trivias
+from APIs import anime_quotes, cats, coffees, dogs, ducks, nekos, quotes, trivias, waifu_stuff
 from webscraping import anime_news, stock_check
 
 logger = settings.logging.getLogger("bot")
@@ -21,6 +21,7 @@ def help_list(thing):
 
 
 def run():
+
     intents = discord.Intents.all()
 
     bot = commands.Bot(command_prefix='v!', intents=intents)
@@ -32,6 +33,7 @@ def run():
         logger.info(f"Guild ID: {bot.guilds[0].id}")
         #bot.tree.copy_global_to(guild=settings.GUILDS_ID)
         print('The bot should be up and running.')
+
         await bot.tree.sync(guild=None)
     
 
@@ -39,14 +41,15 @@ def run():
     @bot.tree.command(name='help', description='Provides a list of all commands.')
     async def help(interaction: discord.Interaction):
         embed = discord.Embed(
-            color=discord.Color.blue(),
+            color=discord.Color.dark_purple(),
             description='This bot has many fun commands for you to use!\n*Keep in mind that this bot uses slash commands.*',
             title=f'{bot.user.name}\'s commands!'
         )
-        embed.add_field(name='Helpful Commands', value=help_list(lists.helpful), inline=False)
-        embed.add_field(name='Random Commands', value=help_list(lists.random_commands), inline=False)
-        embed.add_field(name='Image Commands', value=help_list(lists.image), inline=False)
-        embed.add_field(name='Fun Commands', value=help_list(lists.fun), inline=False)
+        embed.add_field(name='Helpful Commands', value=lists.helpful_info + '\n' + help_list(lists.helpful), inline=False)
+        embed.add_field(name='Random Commands', value=lists.random_info + '\n' + help_list(lists.random_commands), inline=False)
+        embed.add_field(name='Image Commands', value=lists.image_info + '\n' + help_list(lists.image), inline=False)
+        embed.add_field(name='Fun Commands', value=lists.fun_info + '\n' + help_list(lists.fun), inline=False)
+        embed.add_field(name='Interaction Commands', value=lists.interactions_info + '\n' + help_list(lists.interactions), inline=False)
         embed.add_field(name='Anime Commands', value=help_list(lists.anime), inline=False)
         await interaction.response.send_message(embed=embed)
     
@@ -161,13 +164,51 @@ def run():
         embed.set_footer(text='Everyone needs it.')
         await interaction.response.send_message(embed=embed)
 
+    @bot.tree.command(name='megumin', description='Sends a random photo of Megumin!')
+    async def megumin(interaction: discord.Interaction):
+        embed = discord.Embed(
+            color=discord.Color.orange(),
+            title="爆裂 :boom:"
+        )
+        embed.set_image(url=waifu_stuff.get_the_img('megumin'))
+        embed.set_footer(text='Megumin')
+        await interaction.response.send_message(embed=embed)
+
+    @bot.tree.command(name='smug', description=':smirk:')
+    async def smirk(interaction: discord.Interaction):
+        embed = discord.Embed(
+            color=discord.Color.dark_teal(),
+            title=':smirk:'
+        )
+        embed.set_image(url=waifu_stuff.get_the_img('smirk'))
+        await interaction.response.send_message(embed=embed)
+
+    @bot.tree.command(name='nom', description='nom nom nom')
+    async def nom(interaction: discord.Interaction):
+        embed = discord.Embed(
+            color=discord.Color.yellow(),
+            title='nom nom nom'
+        )
+        embed.set_image(url=waifu_stuff.get_the_img('nom'))
+        await interaction.response.send_message(embed=embed)
+
+    @bot.tree.command(name='cringe', description='Cringe at something!')
+    async def cringe(interaction: discord.Interaction):
+        embed = discord.Embed(
+            color=discord.Color.random(),
+            description=f'{interaction.user.mention} is cringing...'
+        )
+        embed.set_image(url=waifu_stuff.get_the_img('cringe'))
+        await interaction.response.send_message(embed=embed)
+
     @bot.tree.command(name='fate', description='Ask a yes or no question!')
     @app_commands.describe(question='Your yes or no question.')
     async def fate(interaction: discord.Interaction, question: str):
         embed = discord.Embed(
             color=discord.Color.random(),
-            title=random.choice(lists.eight_ball_responses)
+            description=random.choice(lists.eight_ball_responses),
         )
+        embed.set_author(name=question)
         await interaction.response.send_message(embed=embed)
 
     @bot.tree.command(name='slap', description='Slaps another user!')
@@ -189,7 +230,49 @@ def run():
         )
         embed.set_image(url=random.choice(lists.kiss_gifs))
         await interaction.response.send_message(embed=embed)
-    
+
+    @bot.tree.command(name='bully', description='Bully another user!')
+    @app_commands.describe(user='The user you want to bully!')
+    async def bully(interaction: discord.Interaction, user: discord.User):
+        embed = discord.Embed(
+            color=discord.Color.red(),
+            description=f"**{interaction.user.mention} is bullying {user.mention}!**"
+        )
+        embed.set_image(url=waifu_stuff.get_the_img('bully'))
+        embed.set_footer(text='How mean!')
+        await interaction.response.send_message(embed=embed)
+
+    @bot.tree.command(name='lick', description='Lick another user!')
+    @app_commands.describe(user='The user you want to lick!')
+    async def lick(interaction: discord.Interaction, user: discord.User):
+        embed = discord.Embed(
+            color=discord.Color.pink(),
+            description=f"**{interaction.user.mention} licked {user.mention} :stuck_out_tongue:**"
+        )
+        embed.set_image(url=waifu_stuff.get_the_img('lick'))
+        await interaction.response.send_message(embed=embed)
+
+    @bot.tree.command(name='highfive', description='High five another user!')
+    @app_commands.describe(user='The user you want to high five!')
+    async def highfive(interaction: discord.Interaction, user: discord.User):
+        embed = discord.Embed(
+            color=discord.Color.light_embed(),
+            description=f"**{interaction.user.mention} high fived {user.mention} :hand_splayed:**"
+        )
+        embed.set_image(url=waifu_stuff.get_the_img('highfive'))
+        await interaction.response.send_message(embed=embed)
+
+    @bot.tree.command(name='poke', description='Poke another user!')
+    @app_commands.describe(user='Who do you want to poke?')
+    async def poke(interaction: discord.Interaction, user: discord.User):
+        embed = discord.Embed(
+            color=discord.Color.random(),
+            description=f"**{interaction.user.mention} :point_right: {user.mention}**"
+        )
+        embed.set_image(url=waifu_stuff.get_the_img('poke'))
+        embed.set_footer(text='poke poke poke')
+        await interaction.response.send_message(embed=embed)
+
     @bot.tree.command(name='animenews', description='Read up on the latest anime headlines!')
     async def animenews(interaction: discord.Interaction):
         stuff = anime_news.get_anime_news()
@@ -224,6 +307,7 @@ def run():
         await interaction.response.send_message(embed=embed)  
     
     # this command took the longest........
+    # TRIVIAAA
     # the code is probably very inefficient
     @bot.tree.command(name='trivia', description='Asks a random trivia question!')
     async def trivia(interaction: discord.Interaction):
@@ -264,7 +348,7 @@ def run():
             def check(m):
                 return (m.content.capitalize() in ('True', 'False')) and m.channel == channel
             try:
-                answer = await bot.wait_for('message', check=check, timeout=10)
+                answer = await bot.wait_for('message', check=check, timeout=12)
 
                 # when the answer is right
                 if answer.content.capitalize() == info['correct_answer']:
@@ -283,7 +367,7 @@ def run():
                 embed.color = discord.Color.brand_red()
                 embed.description = 'Time\'s up!'
                 embed.add_field(name='Correct Answer\n', value=info['correct_answer'], inline=False)
-                embed.set_footer(text='You get 10 seconds to answer.')
+                embed.set_footer(text='You get 12 seconds to answer.')
                 await interaction.edit_original_response(embed=embed)       
         else:
             embed.add_field(
@@ -296,7 +380,7 @@ def run():
             def check(m):
                 return (m.content.capitalize() in ('A', 'B', 'C', 'D')) and m.channel == channel
             try:
-                answer = await bot.wait_for('message', check=check, timeout=10)
+                answer = await bot.wait_for('message', check=check, timeout=12)
 
                 # when the answer is right
                 if choices_dict[answer.content.capitalize()] == info['correct_answer']:
@@ -315,7 +399,7 @@ def run():
                 embed.color = discord.Color.brand_red()
                 embed.description = 'Time\'s up!'
                 embed.add_field(name='Correct Answer', value=correct_letter + '\n' + info['correct_answer'], inline=False)
-                embed.set_footer(text='You get 10 seconds to answer.')
+                embed.set_footer(text='You get 12 seconds to answer.')
                 await interaction.edit_original_response(embed=embed)
 
 

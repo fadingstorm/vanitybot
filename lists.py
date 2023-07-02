@@ -20,27 +20,42 @@ eight_ball_responses = (
     "Very doubtful."
 )
 
+helpful_info = 'Useful utility commands.'
 helpful = (
     "help",
     "invite",
 )
+random_info = 'Random commands included in this bot.'
 random_commands = (
     "ping",
     "quote",
     "stockinfo"
 )
+image_info = 'Use these commands to get different images.'
 image = (
     "cat",
     "dog",
     "duck",
     "neko",
-    "coffee"
+    "coffee",
+    "megumin",
+    "smug",
+    "nom",
+    "cringe"
 )
+fun_info = 'Fun commands.'
 fun = (
     "fate",
+    "trivia"
+)
+interactions_info = 'Use these to interact with other users.'
+interactions = (
     "slap",
     "kiss",
-    "trivia"
+    "bully",
+    "lick",
+    "highfive",
+    "poke"
 )
 anime = (
     "animenews",
