@@ -4,6 +4,8 @@ import requests
 def get_stock(ticker):
     html_text = requests.get('https://money.cnn.com/quote/quote.html?symb=' + ticker.upper()).text
     soup = BeautifulSoup(html_text, 'lxml')
+
+    # we aren't including cryptocurrencies or currencies
     if ('Symbol not found' in soup.text) or (' vs ' in soup.text):
         return False
     else:

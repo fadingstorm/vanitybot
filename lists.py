@@ -22,16 +22,18 @@ eight_ball_responses = (
 
 helpful_info = 'Useful utility commands.'
 helpful = (
-    "help",
-    "invite",
+    "/help",
+    "/invite",
 )
-random_info = 'Random commands included in this bot.'
-random_commands = (
-    "ping",
-    "quote",
-    "stockinfo"
+misc_info = 'Miscellaneous commands included in this bot.'
+misc_commands = (
+    "/ping",
+    "/quote",
+    "/stockinfo",
+    "/lipsum",
+    "/lyrics"
 )
-image_info = 'Use these commands to get different images.'
+image_info = 'Use these commands to get different images. Type `/image` before the name of the command.'
 image = (
     "cat",
     "dog",
@@ -45,10 +47,10 @@ image = (
 )
 fun_info = 'Fun commands.'
 fun = (
-    "fate",
-    "trivia"
+    "/fate",
+    "/trivia"
 )
-interactions_info = 'Use these to interact with other users.'
+interactions_info = 'Use these to interact with other users. Type `/interact` before the name of the command.'
 interactions = (
     "slap",
     "kiss",
@@ -58,8 +60,8 @@ interactions = (
     "poke"
 )
 anime = (
-    "animenews",
-    "animequote"
+    "/animenews",
+    "/animequote"
 )
 
 slap_gifs = (
