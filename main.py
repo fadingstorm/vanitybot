@@ -3,14 +3,17 @@ import lists
 import settings
 import discord
 import asyncio
+import typing
+from collections import deque
 from discord.ext import commands
 from discord import app_commands
 from APIs import anime_quotes, cats, coffees, dogs, ducks, nekos, quotes, trivias, waifu_stuff
-from webscraping import anime_news, stock_check
+from webscraping import anime_news, lorem_ipsum, songlyrics, stock_check
 
 logger = settings.logging.getLogger("bot")
 
 INVITE_LINK = "https://discord.com/api/oauth2/authorize?client_id=1124264065221541988&permissions=534723819584&scope=bot"
+
 
 # this is literally only for the help command
 def help_list(thing):
@@ -24,8 +27,9 @@ def run():
 
     intents = discord.Intents.all()
 
+    # the bot doesn't actually use prefixes
     bot = commands.Bot(command_prefix='v!', intents=intents)
-    bot.remove_command('help') # remove the default help command, it's ugly
+    bot.remove_command('help') # remove the default help command
 
     @bot.event
     async def on_ready():
@@ -34,8 +38,8 @@ def run():
         #bot.tree.copy_global_to(guild=settings.GUILDS_ID)
         print('The bot should be up and running.')
 
+        await bot.load_extension("COGs.song")
         await bot.tree.sync(guild=None)
-    
 
    # Here are all the commands for the bot
     @bot.tree.command(name='help', description='Provides a list of all commands.')
@@ -112,6 +116,29 @@ def run():
             embed.add_field(name="Current Price:", value=price, inline=False)
             embed.add_field(name=f"Today's Change: {goodbad}", value=f"{changePrice} | {changePercent}", inline=False)
             await interaction.response.send_message(embed=embed)
+
+    @bot.tree.command(name='lipsum', description='Generates placeholder text for you!')
+    @app_commands.describe(amount='The number of paragraphs generated.', length='The length of each paragraph.')
+    async def lipsum(
+        interaction : discord.Interaction,
+        amount : typing.Literal[
+            '1',
+            '2',
+            '3',
+        ],
+        length : typing.Literal[
+            'short',
+            'medium',
+            'long'
+        ]
+    ):
+        info = lorem_ipsum.get_lipsum(amount, length)
+        embed = discord.Embed(
+            color=discord.Color.light_grey(),
+            title=info[0],
+            description=info[1]
+        )
+        await interaction.response.send_message(embed=embed)
 
     @bot.tree.command(name='cat', description='Sends a photo of a cat!')
     async def cat(interaction: discord.Interaction):
@@ -393,7 +420,7 @@ def run():
                     embed.color = discord.Color.brand_red()
                     embed.description = f'{answer.author.mention} got it wrong!'
                     embed.add_field(name='Correct Answer', value=correct_letter + '\n' + info['correct_answer'], inline=False)
-                    embed.set_footer(text=f'You chose: {answer.content.capitalize()}) {choices_dict[answer.content.capitalize()]}')
+                    embed.set_footer(text=f'You chose: {choices_dict[answer.content.capitalize()]}')
                     await interaction.edit_original_response(embed=embed)
             except asyncio.TimeoutError: # when the time is up
                 embed.color = discord.Color.brand_red()
