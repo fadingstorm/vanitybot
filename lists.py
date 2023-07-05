@@ -28,7 +28,8 @@ misc_commands = (
     "/stockinfo",
     "/lipsum",
     "/lyrics",
-    "/createembed"
+    "/createembed",
+    "/avatar"
 )
 image_info = 'Use these commands to get different images. Type `/image` before the name of the command.'
 image = (
@@ -42,11 +43,12 @@ image = (
     "nom",
     "cringe"
 )
-fun_info = 'Fun commands.'
+fun_info = 'Some fun commands. Type `/fun` before the name of the command.'
 fun = (
-    "/8ball",
-    "/trivia",
-    "/dadjoke"
+    "8ball",
+    "trivia",
+    "dadjoke",
+    "createuser"
 )
 interactions_info = 'Use these to interact with other users. Type `/interact` before the name of the command.'
 interactions = (
@@ -61,7 +63,8 @@ text_info = "Have some fun with your text. Type `/text` before the name of the c
 textCmds = (
     'reverse',
     'mock',
-    'emojify'
+    'emojify',
+    'piglatin'
 )
 anime = (
     "/animenews",
@@ -108,3 +111,7 @@ info_commands = (
 
 bot_information = """This bot is a little project made in someone\'s free time.
 A simple bot with a variety of different functions ranging from displaying pictures of nekos to finding song lyrics to grabbing stock information."""
+
+
+updates_title = 'Latest Changes'
+updates_field = ('Added Command Category', 'New command category: `/text`\n*These alter a given string in fun ways.*')
