@@ -27,6 +27,25 @@ def emojify_txt(text):
         
     return result
 
+def pig_latin(text):
+    vowels = ['a', 'e', 'i', 'o', 'u']
+    words = text.lower().split()
+    pig_latin_words = []
+
+    for word in words:
+        if word[0] in vowels:
+            pig_latin_words.append(word + 'way')
+        else:
+            if (word.startswith('th')) or (word.startswith('sh')) or (word.startswith('gh')):
+                pig_latin_words.append(word[2:] + word[0] + word[1] + 'ay')
+            else:
+                pig_latin_words.append(word[1:] + word[0] + 'ay')
+
+    pig_latin_text = ' '.join(pig_latin_words)
+    return pig_latin_text
+
+
+
 class TextCmds(app_commands.Group):
 
     @app_commands.command(name='reverse', description='Reverse a given text.')
@@ -43,6 +62,11 @@ class TextCmds(app_commands.Group):
     @app_commands.describe(text='The text you want to emojify.')
     async def emojify(self, interaction: discord.Interaction, text: str):
         await interaction.response.send_message(emojify_txt(text))
+
+    @app_commands.command(name='piglatin', description='Convert text into Pig Latin.')
+    @app_commands.describe(text='The text you want to convert.')
+    async def piglatin(self, interaction: discord.Interaction, text: str):
+        await interaction.response.send_message(pig_latin(text))
 
 async def setup(bot):
     bot.tree.add_command(TextCmds(name='text'))
