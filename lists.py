@@ -20,10 +20,7 @@ eight_ball_responses = (
     "Very doubtful."
 )
 
-helpful_info = 'Useful utility commands.'
-helpful = (
-    "`/invite`"
-)
+
 misc_info = 'Miscellaneous commands included in this bot.'
 misc_commands = (
     "/ping",

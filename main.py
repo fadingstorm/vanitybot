@@ -3,12 +3,14 @@ import lists
 import settings
 import discord
 import asyncio
+import http
 import typing
+import requests
 from paginator import Paginator
 from discord.ext import commands
 from discord import app_commands
-from APIs import anime_quotes, dadjokes, quotes, trivias
-from webscraping import anime_news, lorem_ipsum, stock_check, songlyrics
+from APIs import anime_quotes, dadjokes, lorem_ipsum, quotes, trivias
+from webscraping import anime_news, stock_check, songlyrics
 
 logger = settings.logging.getLogger("bot")
 
@@ -53,7 +55,7 @@ def run():
             description=f'A list of all commands available in this bot.\n*Keep in mind that this bot ONLY uses [slash commands](https://support.discord.com/hc/en-us/articles/1500000368501-Slash-Commands-FAQ).*',
             title=f'{bot.user.name}\'s Commands'
         )
-        embed.add_field(name='Helpful Commands', value=lists.helpful_info + '\n' + lists.helpful, inline=False)
+        embed.add_field(name='', value=f'[Invite Me!]({INVITE_LINK})', inline=False)
         embed.add_field(name='Info Commands', value=lists.infoOfInfo + '\n' + help_list(lists.info_commands), inline=False)
         embed.add_field(name='Miscellaneous Commands', value=lists.misc_info + '\n' + help_list(lists.misc_commands), inline=False)
         embed.add_field(name='Image Commands', value=lists.image_info + '\n' + help_list(lists.image), inline=False)
@@ -169,6 +171,39 @@ def run():
             )
             embed.set_footer(text='Make sure to type the name correctly.')
             await interaction.response.send_message(embed=embed)
+    
+    @bot.tree.command(name='createembed', description='Create your own embed!')
+    @app_commands.describe(
+        title='The title of your embed.',
+        description='The description (text) of your embed.',
+        imageurl='The url of the image displayed in your embed.',
+        thumbnailurl='The url of the thumbnail (the picture in the top right)',
+        footer='The text displayed in the footer of your embed.'
+        )
+    async def createembed(
+        interaction: discord.Interaction,
+        title: str,
+        description: str='',
+        imageurl: str='',
+        thumbnailurl: str='',
+        footer: str=''
+        ):
+        embed = discord.Embed(
+            title=title,
+            description=description
+        )
+        embed.set_author(name=interaction.user.name, icon_url=interaction.user.avatar)
+        embed.set_footer(text=footer)
+        embed.set_image(url=imageurl)
+        embed.set_thumbnail(url=thumbnailurl)
+
+        try:
+            await interaction.response.send_message(embed=embed)
+        except:
+            embed = discord.Embed(color=discord.Color.brand_red(), title='There was an error loading your embed!')
+            embed.set_author(name=bot.user.name, icon_url=bot.user.avatar.url)
+            await interaction.response.send_message(embed=embed, ephemeral=True)
+
 
     @bot.tree.command(name='8ball', description='Ask a yes or no question!')
     @app_commands.describe(question='Your yes or no question.')

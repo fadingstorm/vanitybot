@@ -52,7 +52,7 @@ class InfoCommands(app_commands.Group):
         embed = discord.Embed(
             color=discord.Color.blue(),
             title=interaction.guild,
-            description=f"**Server ID: {interaction.guild_id}**",
+            description=f"Server ID: {interaction.guild_id}",
         )
         embed.set_thumbnail(url=interaction.guild.icon)
         embed.add_field(name='Server Created On', value=f'`{str(interaction.guild.created_at)[:-13]}`', inline=False)
