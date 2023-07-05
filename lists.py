@@ -22,8 +22,7 @@ eight_ball_responses = (
 
 helpful_info = 'Useful utility commands.'
 helpful = (
-    "/help",
-    "/invite",
+    "`/invite`"
 )
 misc_info = 'Miscellaneous commands included in this bot.'
 misc_commands = (
@@ -31,7 +30,8 @@ misc_commands = (
     "/quote",
     "/stockinfo",
     "/lipsum",
-    "/lyrics"
+    "/lyrics",
+    "/createembed"
 )
 image_info = 'Use these commands to get different images. Type `/image` before the name of the command.'
 image = (
@@ -47,8 +47,9 @@ image = (
 )
 fun_info = 'Fun commands.'
 fun = (
-    "/fate",
-    "/trivia"
+    "/8ball",
+    "/trivia",
+    "/dadjoke"
 )
 interactions_info = 'Use these to interact with other users. Type `/interact` before the name of the command.'
 interactions = (
@@ -58,6 +59,12 @@ interactions = (
     "lick",
     "highfive",
     "poke"
+)
+text_info = "Have some fun with your text. Type `/text` before the name of the command."
+textCmds = (
+    'reverse',
+    'mock',
+    'emojify'
 )
 anime = (
     "/animenews",
@@ -93,3 +100,14 @@ kiss_gifs = (
     "https://media.tenor.com/YbIFALM1-MIAAAAC/anime-kiss.gif",
     "https://media.tenor.com/3xrkm45MqkIAAAAC/anime-kiss.gif"
 )
+
+infoOfInfo = "Get general information about certain topics. Type `/info` before the name of the command."
+info_commands = (
+    "vanitybot",
+    "user",
+    "server",
+    "serverroles"
+)
+
+bot_information = """This bot is a little project made in someone\'s free time.
+A simple bot with a variety of different functions ranging from displaying pictures of nekos to finding song lyrics to grabbing stock information."""

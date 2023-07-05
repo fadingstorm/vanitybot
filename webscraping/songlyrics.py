@@ -24,7 +24,6 @@ def get_lyrics(song):
     soup = BeautifulSoup(resp, 'lxml')
     if "Sorry, your search returned" in soup.text:
         return "Sorry, I couldn\'t find that song!"
-        print('lol')
     else:
         panel = soup.find('div', class_='panel')
         info = panel.find('td', class_='text-left visitedlyr').text.replace('1. ', '').split(' - ')
@@ -38,8 +37,5 @@ def get_lyrics(song):
         # this finds the very specific html comment and finds the parent div
         where = soup.find_all(string=lambda string:isinstance(string, Comment))[13].find_parent('div')
         lyrics = split_string(where.text)
-
-        pic = "https://www.azlyrics.com" + soup.find('img', class_='album-image')['src']
         
-        
-        return (name, artist, lyrics, pic)
+        return (name, artist, lyrics)

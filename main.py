@@ -7,7 +7,7 @@ import typing
 from paginator import Paginator
 from discord.ext import commands
 from discord import app_commands
-from APIs import anime_quotes, quotes, trivias
+from APIs import anime_quotes, dadjokes, quotes, trivias
 from webscraping import anime_news, lorem_ipsum, stock_check, songlyrics
 
 logger = settings.logging.getLogger("bot")
@@ -19,7 +19,8 @@ INVITE_LINK = "https://discord.com/api/oauth2/authorize?client_id=11242640652215
 def help_list(thing):
     string = ''
     for i in thing:
-        string += str(f'`{i}` ')
+        string += str(f'`{i}`, ')
+    string = string[:-2]
     return string
 
 
@@ -34,12 +35,14 @@ def run():
     @bot.event
     async def on_ready():
         logger.info(f"User: {bot.user} (ID: {bot.user.id})")
-        logger.info(f"Guild ID: {bot.guilds[0].id}")
+        logger.info(f'Guild ID: {bot.guilds[0].id}')
         #bot.tree.copy_global_to(guild=settings.GUILDS_ID)
         print('The bot should be up and running.')
 
         await bot.load_extension("COGs.images")
         await bot.load_extension("COGs.interactions")
+        await bot.load_extension("COGs.information")
+        await bot.load_extension("COGs.text_commands")
         await bot.tree.sync(guild=None)
 
    # Here are all the commands for the bot
@@ -47,17 +50,19 @@ def run():
     async def help(interaction: discord.Interaction):
         embed = discord.Embed(
             color=discord.Color.dark_purple(),
-            description='This bot has many fun commands for you to use!\n*Keep in mind that this bot uses slash commands.*',
-            title=f'{bot.user.name}\'s commands!'
+            description=f'A list of all commands available in this bot.\n*Keep in mind that this bot ONLY uses [slash commands](https://support.discord.com/hc/en-us/articles/1500000368501-Slash-Commands-FAQ).*',
+            title=f'{bot.user.name}\'s Commands'
         )
-        embed.add_field(name='Helpful Commands', value=lists.helpful_info + '\n' + help_list(lists.helpful), inline=False)
+        embed.add_field(name='Helpful Commands', value=lists.helpful_info + '\n' + lists.helpful, inline=False)
+        embed.add_field(name='Info Commands', value=lists.infoOfInfo + '\n' + help_list(lists.info_commands), inline=False)
         embed.add_field(name='Miscellaneous Commands', value=lists.misc_info + '\n' + help_list(lists.misc_commands), inline=False)
         embed.add_field(name='Image Commands', value=lists.image_info + '\n' + help_list(lists.image), inline=False)
         embed.add_field(name='Fun Commands', value=lists.fun_info + '\n' + help_list(lists.fun), inline=False)
         embed.add_field(name='Interaction Commands', value=lists.interactions_info + '\n' + help_list(lists.interactions), inline=False)
+        embed.add_field(name='Text Commands', value=lists.text_info + '\n' + help_list(lists.textCmds), inline=False)
         embed.add_field(name='Anime Commands', value=help_list(lists.anime), inline=False)
 
-        embed.set_footer(text='This bot was created by @fadingstorm')
+        # embed.set_footer(text='This bot was created by @fadingstorm')
 
         await interaction.response.send_message(embed=embed)
     
@@ -70,7 +75,6 @@ def run():
             color=discord.Color.teal(),
             title='Thanks for using my bot!'
         )
-        embed.set_footer(text='fadingstorm | creator')
         await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
     @bot.tree.command(name='ping', description='Sends pong!')
@@ -151,11 +155,10 @@ def run():
         if info != 'Sorry, I couldn\'t find that song!':
             embeds = []
             for s in info[2]:
-                embed = discord.Embed(title=info[0], description=f'By: {info[1]}', color=discord.Color.random())
+                embed = discord.Embed(title=info[0], description=f'By: {info[1]}', color=discord.Color.purple())
                 embed.add_field(name='Lyrics', value=s)
 
                 embeds.append(embed)
-                embed.set_thumbnail(url=info[3])
             
             view = Paginator(embeds)
             await interaction.response.send_message(embed=view.initial, view=view)
@@ -167,15 +170,23 @@ def run():
             embed.set_footer(text='Make sure to type the name correctly.')
             await interaction.response.send_message(embed=embed)
 
-    @bot.tree.command(name='fate', description='Ask a yes or no question!')
+    @bot.tree.command(name='8ball', description='Ask a yes or no question!')
     @app_commands.describe(question='Your yes or no question.')
-    async def fate(interaction: discord.Interaction, question: str):
+    async def eight_ball(interaction: discord.Interaction, question: str):
         embed = discord.Embed(
             color=discord.Color.random(),
             description=random.choice(lists.eight_ball_responses),
         )
         embed.set_author(name=question)
         await interaction.response.send_message(embed=embed)
+    
+    @bot.tree.command(name='dadjoke', description='Get a random dad joke!')
+    async def dadjoke(interaction: discord.Interaction):
+        embed = discord.Embed(
+            color=discord.Color.random(),
+            title=dadjokes.get_dadjoke(),
+        )
+        await interaction.response.send_message(embed=embed)    
 
     @bot.tree.command(name='animenews', description='Read up on the latest anime headlines!')
     async def animenews(interaction: discord.Interaction):

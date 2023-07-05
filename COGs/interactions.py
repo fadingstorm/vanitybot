@@ -1,7 +1,7 @@
 import discord
 import random
 import lists
-from APIs import cats, dogs, ducks, nekos, coffees, waifu_stuff
+from APIs import waifu_stuff
 from discord import app_commands
 
 class InteractionCommands(app_commands.Group):

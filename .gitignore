@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 
 wait_for_example.txt
+testing.py
