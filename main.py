@@ -1,11 +1,7 @@
-import random
 import lists
 import settings
 import discord
-import asyncio
-import http
 import typing
-import requests
 from paginator import Paginator
 from discord.ext import commands
 from discord import app_commands
