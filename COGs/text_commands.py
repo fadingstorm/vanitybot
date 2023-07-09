@@ -21,7 +21,7 @@ def emojify_txt(text):
         emoji_dict[i] = f':regional_indicator_{i}:'
     for i in text:
         if i.lower().isalpha():
-            result += emoji_dict[i] + ' '
+            result += emoji_dict[i.lower()] + ' '
         else:
             result += i + ' '
         
