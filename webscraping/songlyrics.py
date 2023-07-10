@@ -20,7 +20,7 @@ def split_string(string):
     return strings
 
 def get_lyrics(song):
-    resp = requests.get(f"https://search.azlyrics.com/search.php?q={song.replace(' ', '+')}&x=2d24e69f60e09cfebc7dc3014fb7b3f5060e8a7387a125377a9e217d114a14fc").text
+    resp = requests.get(f"https://search.azlyrics.com/search.php?q={song.replace(' ', '+')}&x=020ac18040fd663d3ac24c952cd176ba3b5d68eee238f8481d47c1e04ae3e39f").text
     soup = BeautifulSoup(resp, 'lxml')
     if "Sorry, your search returned" in soup.text:
         return "Sorry, I couldn\'t find that song!"
