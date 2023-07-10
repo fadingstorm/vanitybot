@@ -5,8 +5,9 @@ import typing
 from paginator import Paginator
 from discord.ext import commands
 from discord import app_commands
-from APIs import anime_quotes, dadjokes, lorem_ipsum, quotes, trivias
+from APIs import anime_quotes, lorem_ipsum, quotes
 from webscraping import anime_news, stock_check, songlyrics
+
 
 logger = settings.logging.getLogger("bot")
 
@@ -40,6 +41,7 @@ def run():
         await bot.load_extension("COGs.information")
         await bot.load_extension("COGs.text_commands")
         await bot.load_extension("COGs.fun")
+        await bot.load_extension("COGs.manipulate")
         await bot.tree.sync(guild=None)
 
    # Here are all the commands for the bot
@@ -245,15 +247,14 @@ def run():
                 color=discord.Color.dark_purple(),
                 title=lists.updates_title
             )
-            embed.add_field(name="Added Command Category", value="New command category: `/text`\n*These alter a given string in fun ways.*", inline=False)
             embed.add_field(name="Organized Commands", value="Most commands now fall under their own category save for the `misc` and `anime` ones.", inline=False)
             embed.add_field(name="Added New Command", value="Added new command, `createuser` under the `/fun` category.")
+            embed.add_field(name='Added Command Category', value="Added command category `manip`, which allows you to have some fun with different users' avatars.")
 
         
-        embed.set_author(name='fadingstorm', icon_url='https://images-ext-2.discordapp.net/external/4qN_SFZi-An4N0kexMHUCLzTm-hX_irO3eegZvj3GWI/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/766147685035933737/46ea45397f8014f9c01a06ee55bf3370.png')
+        embed.set_author(name='fadingstorm', icon_url='https://images-ext-2.discordapp.net/external/4qN_SFZi-An4N0kexMHUCLzTm-hX_irO3eegZvj3GWI/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/766147685035933737/46ea45397f8014f9c01a06ee55bf3370.png?width=343&height=343')
         
         await interaction.response.send_message(embed=embed)
-
 
     bot.run(settings.DISCORD_API_SECRET, root_logger=True)
 
