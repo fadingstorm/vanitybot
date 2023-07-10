@@ -67,7 +67,7 @@ class ManipCmds(app_commands.Group):
     
     @app_commands.command(name='textify', description='Draws a low quality avatar with symbols!')
     @app_commands.describe(user='The user who\'s avatar you want to textify (quality is terrible...)', size='Size of the output. Default is 31, which is the max.')
-    async def emojify(self, interaction: discord.Interaction, user: discord.User, size: int = 31):
+    async def textify(self, interaction: discord.Interaction, user: discord.User, size: int = 31):
         if size > 31:
             result = 'That size is too big!'
             await interaction.response.send_message(result, ephemeral=True)
