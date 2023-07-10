@@ -1,3 +1,5 @@
+# original here https://github.com/CodeWithSwastik/emojify-bot/blob/main/README.md
+
 from PIL import Image
 
 COLORS = {
@@ -10,9 +12,6 @@ COLORS = {
     (255, 255, 255): "@#",
 }
 
-
-
-
 def euclidean_distance(c1, c2):
     r1, g1, b1 = c1
     r2, g2, b2 = c2
@@ -20,11 +19,9 @@ def euclidean_distance(c1, c2):
 
     return d
 
-
 def find_closest_emoji(color):
     c = sorted(list(COLORS), key=lambda k: euclidean_distance(color, k))
     return COLORS[c[0]]
-
 
 def emojify_image(img, size=30):
 
