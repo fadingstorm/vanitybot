@@ -2,7 +2,7 @@ import discord
 import os
 import requests
 from discord import app_commands
-from emoji_image import emojify_image
+from textify import textify_image
 from io import BytesIO
 from PIL import Image
 
@@ -81,7 +81,7 @@ class ManipCmds(app_commands.Group):
                 def get_emojified_image():
                     r = requests.get(url, stream=True)
                     image = Image.open(r.raw).convert("RGB")
-                    res = emojify_image(image, size)
+                    res = textify_image(image, size)
 
                     if size > 1:
                         res = f"```{res}```"
