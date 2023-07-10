@@ -101,6 +101,14 @@ kiss_gifs = (
     "https://media.tenor.com/3xrkm45MqkIAAAAC/anime-kiss.gif"
 )
 
+manip_info = "These commands let you have fun with a user's avatar. Type `/manip` before the name of the command."
+manipCmds = (
+    "rip",
+    "everest",
+    "wanted",
+    "textify"
+)
+
 infoOfInfo = "Get general information about certain topics. Type `/info` before the name of the command."
 info_commands = (
     "vanitybot",
