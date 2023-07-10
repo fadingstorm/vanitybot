@@ -61,7 +61,7 @@ def run():
         embed.add_field(name='Interaction Commands', value=lists.interactions_info + '\n' + help_list(lists.interactions), inline=False)
         embed.add_field(name='Text Commands', value=lists.text_info + '\n' + help_list(lists.textCmds), inline=False)
         embed.add_field(name='Anime Commands', value=help_list(lists.anime), inline=False)
-        embed.add_field(name='Image Manipulation Commands', value=lists.manip_info + '\n' + help_list(lists.manipCmds), inline=False)
+        embed.add_field(name='Avatar Manipulation Commands', value=lists.manip_info + '\n' + help_list(lists.manipCmds), inline=False)
 
         # embed.set_footer(text='This bot was created by @fadingstorm')
 
