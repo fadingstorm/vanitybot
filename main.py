@@ -2,7 +2,7 @@ import lists
 import settings
 import discord
 import typing
-from paginator import Paginator
+from extras.paginator import Paginator
 from discord.ext import commands
 from discord import app_commands
 from APIs import anime_quotes, lorem_ipsum, quotes

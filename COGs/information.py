@@ -1,6 +1,6 @@
 import discord
 from lists import bot_information
-from paginator import Paginator
+from extras.paginator import Paginator
 from discord import app_commands
 
 class InfoCommands(app_commands.Group):

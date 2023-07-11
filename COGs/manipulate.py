@@ -1,10 +1,9 @@
 import discord
 import os
-import glob
 import requests
 import random
 from discord import app_commands
-from textify import textify_image
+from extras.textify import textify_image
 from io import BytesIO
 from PIL import Image, ImageFont, ImageDraw
 
