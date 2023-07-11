@@ -118,7 +118,9 @@ info_commands = (
 )
 
 bot_information = """This bot is a little project made in someone\'s free time.
-A simple bot with a variety of different functions ranging from displaying pictures of nekos to finding song lyrics to grabbing stock information."""
+A simple bot with a variety of different functions ranging from displaying pictures of nekos to finding song lyrics to grabbing stock information.
+
+*This bot is [open source](https://github.com/fadingstorm/vanitybot).*"""
 
 
 updates_title = 'Latest Changes'
