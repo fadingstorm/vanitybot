@@ -1,4 +1,4 @@
-# vanitybot
+# VanityBot
 A multi-functional discord bot
 
 This bot is a little project made in someone's free time.
