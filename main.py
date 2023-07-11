@@ -44,7 +44,7 @@ def run():
         await bot.load_extension("COGs.manipulate")
         await bot.tree.sync(guild=None)
 
-   # Here are all the commands for the bot
+   # Most commands that don't fit into a category
     @bot.tree.command(name='help', description='Provides a list of all commands.')
     async def help(interaction: discord.Interaction):
         embed = discord.Embed(
