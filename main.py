@@ -248,9 +248,9 @@ def run():
                 color=discord.Color.dark_purple(),
                 title=lists.updates_title
             )
-            embed.add_field(name="Organized Commands", value="Most commands now fall under their own category save for the `misc` and `anime` ones.", inline=False)
             embed.add_field(name="Added New Command", value="Added new command, `createuser` under the `/fun` category.", inline=False)
-            embed.add_field(name='Added Command Category', value="Added command category `manip`, which allows you to have some fun with different users' avatars.", inline=False)
+            embed.add_field(name='Added Command Category', value="Added command category `/manip`, which allows you to have some fun with different users' avatars.", inline=False)
+            embed.add_field(name="Added New Command", value="Added new command, `tweet` under the `/manip` category.", inline=False)
 
         
         embed.set_author(name='fadingstorm', icon_url='https://images-ext-2.discordapp.net/external/4qN_SFZi-An4N0kexMHUCLzTm-hX_irO3eegZvj3GWI/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/766147685035933737/46ea45397f8014f9c01a06ee55bf3370.png?width=343&height=343')
