@@ -44,6 +44,8 @@ def run():
         await bot.load_extension("COGs.manipulate")
         await bot.tree.sync(guild=None)
 
+        await bot.change_presence(activity=discord.Game(name="hard to get~"))
+
    # Most commands that don't fit into a category
     @bot.tree.command(name='help', description='Provides a list of all commands.')
     async def help(interaction: discord.Interaction):
