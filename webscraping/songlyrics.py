@@ -1,4 +1,5 @@
 import requests
+import re
 from bs4 import BeautifulSoup, Comment
 
 # makes sure that each page of the embed has at least 300 chars but not over 1024
@@ -19,8 +20,15 @@ def split_string(string):
 
     return strings
 
-def get_lyrics(song):
-    resp = requests.get(f"https://search.azlyrics.com/search.php?q={song.replace(' ', '+')}&x=7123f32478e1a9c85ec8eb5cd1c5af50601a84d6ff19d3ebc93a987aa37d0995").text
+def get_lyrics(song:str):
+
+    # Finding the weird randomness thing
+    resp = requests.get('https://www.azlyrics.com/geo.js').text
+    wtf = re.search(r'ep\.setAttribute\("value", "(.*?)"\)', resp).group(1)
+
+    link = f"https://search.azlyrics.com/search.php?q={song.replace(' ', '+')}&x={wtf}"
+
+    resp = requests.get(link).text
     soup = BeautifulSoup(resp, 'lxml')
     if "Sorry, your search returned" in soup.text:
         return "Sorry, I couldn\'t find that song!"
@@ -39,4 +47,3 @@ def get_lyrics(song):
         lyrics = split_string(where.text)
         
         return (name, artist, lyrics)
-
